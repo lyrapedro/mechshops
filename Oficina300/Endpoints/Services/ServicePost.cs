@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Oficina300.Domain.Shops;
-using Oficina300.Endpoints.Shops;
 using Oficina300.Infra.Data;
 using System.Security.Claims;
 
@@ -12,6 +12,7 @@ public class ServicePost
     public static string[] Methods => new string[] { HttpMethod.Post.ToString() };
     public static Delegate Handle => Action;
 
+    [Authorize(Policy = "EmployeePolicy")]
     public static async Task<IResult> Action([FromRoute] int shopId, HttpContext http, ServiceRequest serviceRequest, ApplicationDbContext context)
     {
         var userId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;

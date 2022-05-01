@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using Oficina300.Endpoints.Employees;
 using Oficina300.Endpoints.Services;
 using Oficina300.Endpoints.Shops;
 using Oficina300.Infra.Data;
@@ -40,7 +41,7 @@ builder.Services.AddAuthorization(options =>
         .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
         .RequireAuthenticatedUser()
         .Build();
-    options.AddPolicy("EmployeePolicy", p => p.RequireAuthenticatedUser().RequireClaim("EmployeeCode"));
+    options.AddPolicy("EmployeePolicy", p => p.RequireAuthenticatedUser().RequireClaim("ShopId"));
 });
 builder.Services.AddAuthentication(x =>
 {
@@ -77,6 +78,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.MapMethods(EmployeePost.Template, EmployeePost.Methods, EmployeePost.Handle);
+app.MapMethods(EmployeeGetAll.Template, EmployeeGetAll.Methods, EmployeeGetAll.Handle);
 
 app.MapMethods(ShopPost.Template, ShopPost.Methods, ShopPost.Handle);
 app.MapMethods(ShopGetAll.Template, ShopGetAll.Methods, ShopGetAll.Handle);

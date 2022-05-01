@@ -9,6 +9,10 @@ public class Service : Entity
     public string Name { get; set; }
     public int WorkUnits { get; set; }
 
+    public Service()
+    {
+        Validate();
+    }
 
     public Service(string name, int workUnits, int shopId, string createdBy)
     {

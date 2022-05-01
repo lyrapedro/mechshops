@@ -10,10 +10,9 @@ public class EmployeePost
     public static string[] Methods => new string[] { HttpMethod.Post.ToString() };
     public static Delegate Handle => Action;
 
-    [Authorize(Policy = "EmployeePolicy")]
+    [AllowAnonymous]
     public static async Task<IResult> Action(EmployeeRequest employeeRequest, HttpContext http, UserManager<IdentityUser> userManager)
     {
-        var userId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
         var newUser = new IdentityUser { UserName = employeeRequest.Cpf, Email = employeeRequest.Cpf };
         var result = await userManager.CreateAsync(newUser, employeeRequest.Password);
 
@@ -22,9 +21,8 @@ public class EmployeePost
 
         var userClaims = new List<Claim>
         {
-            new Claim("EmployeeCode", employeeRequest.EmployeeCode),
-            new Claim("Name", employeeRequest.Name),
-            new Claim("CreatedBy", userId),
+            new Claim("ShopId", employeeRequest.ShopId),
+            new Claim("Name", employeeRequest.Name)
         };
 
         var claimResult = await userManager.AddClaimsAsync(newUser, userClaims);
