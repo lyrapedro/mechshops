@@ -17,11 +17,13 @@ public class ShopPut
         var userId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;    
         var shop = context.Shops.Where(c => c.Id == id).FirstOrDefault();
 
-        if (shop == null) return Results.NotFound("Shop does not exist");
+        if (shop == null)
+            return Results.NotFound("Shop does not exist");
 
         shop.EditInfo(shopRequest.Name, shopRequest.WorkLoad, userId);
 
-        if (!shop.IsValid) return Results.ValidationProblem(shop.Notifications.ConvertToProblemDetails());
+        if (!shop.IsValid)
+            return Results.ValidationProblem(shop.Notifications.ConvertToProblemDetails());
 
         await context.SaveChangesAsync();
 

@@ -2,28 +2,28 @@
 using Microsoft.AspNetCore.Mvc;
 using Oficina300.Infra.Data;
 
-namespace Oficina300.Endpoints.Shops;
+namespace Oficina300.Endpoints.Services;
 
-public class ShopDelete
+public class ServiceDelete
 {
-    public static string Template => "/shops/{id:int}";
+    public static string Template => "/services/{id:int}";
     public static string[] Methods => new string[] { HttpMethod.Delete.ToString() };
     public static Delegate Handle => Action;
 
     [Authorize(Policy = "EmployeePolicy")]
     public static async Task<IResult> Action([FromRoute] int id, ApplicationDbContext context)
     {
-        var shop = context.Shops.FirstOrDefault(c => c.Id == id);
+        var service = context.Services.FirstOrDefault(s => s.Id == id);
 
-        if (shop == null)
-            return Results.NotFound("Shop does not exist");
+        if (service == null)
+            return Results.NotFound("Service does not exist");
 
-        var services = context.Services.Where(s => s.ShopId == shop.Id).ToList();
+        var services = context.Services.Where(s => s.ShopId == service.Id).ToList();
 
         if (services.Any())
             context.Services.RemoveRange(services);
 
-        context.Shops.Remove(shop);
+        context.Services.Remove(service);
 
         await context.SaveChangesAsync();
 

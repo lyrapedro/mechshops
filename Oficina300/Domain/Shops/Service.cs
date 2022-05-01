@@ -10,13 +10,15 @@ public class Service : Entity
     public int WorkUnits { get; set; }
 
 
-    public Service(string name, int workUnits)
+    public Service(string name, int workUnits, int shopId, string createdBy)
     {
+        Guid validGuid;
+        ShopId = shopId;
         Name = name;
         WorkUnits = workUnits;
         ModifiedAt = DateTime.UtcNow;
         CreatedAt = DateTime.UtcNow;
-        ModifiedBy = Guid.Empty;
+        ModifiedBy = Guid.TryParse(createdBy, out validGuid) ? validGuid : Guid.Empty;
 
         Validate();
     }

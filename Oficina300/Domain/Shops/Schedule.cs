@@ -10,13 +10,12 @@ public class Schedule : Entity
     public Guid CreatedBy { get; set; }
 
 
-    public Schedule(DateTime date, string createdBy)
+    public Schedule(DateTime date, Guid createdBy)
     {
-        Guid validGuid;
         Date = date;
         ModifiedAt = DateTime.UtcNow;
         CreatedAt = DateTime.UtcNow;
-        CreatedBy = Guid.TryParse(createdBy, out validGuid) ? validGuid : Guid.Empty;
+        CreatedBy = createdBy;
         ModifiedBy = Guid.Empty;
 
         Validate();

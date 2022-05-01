@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using Oficina300.Endpoints.Services;
 using Oficina300.Endpoints.Shops;
 using Oficina300.Infra.Data;
 using Serilog;
@@ -11,19 +12,19 @@ using System.Data.SqlClient;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.WebHost.UseSerilog((context, configuration) =>
+builder.Host.UseSerilog((context, configuration) =>
 {
     configuration
         .WriteTo.Console()
         .WriteTo.MSSqlServer(
-            context.Configuration["ConnectionString:DefaultConnection"],
+            context.Configuration["ConnectionStrings:DefaultConnection"],
                 sinkOptions: new MSSqlServerSinkOptions()
                 {
                     AutoCreateSqlTable = true,
                     TableName = "Logs"
                 });
 });
-builder.Services.AddSqlServer<ApplicationDbContext>(builder.Configuration["ConnectionString:DefaultConnection"]);
+builder.Services.AddSqlServer<ApplicationDbContext>(builder.Configuration["ConnectionStrings:DefaultConnection"]);
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
     options.Password.RequireNonAlphanumeric = false;
@@ -81,6 +82,11 @@ app.MapMethods(ShopPost.Template, ShopPost.Methods, ShopPost.Handle);
 app.MapMethods(ShopGetAll.Template, ShopGetAll.Methods, ShopGetAll.Handle);
 app.MapMethods(ShopPut.Template, ShopPut.Methods, ShopPut.Handle);
 app.MapMethods(ShopDelete.Template, ShopDelete.Methods, ShopDelete.Handle);
+
+app.MapMethods(ServicePost.Template, ServicePost.Methods, ServicePost.Handle);
+app.MapMethods(ServiceGetAll.Template, ServiceGetAll.Methods, ServiceGetAll.Handle);
+app.MapMethods(ServicePut.Template, ServicePut.Methods, ServicePut.Handle);
+app.MapMethods(ServiceDelete.Template, ServiceDelete.Methods, ServiceDelete.Handle);
 
 app.UseExceptionHandler("/error");
 app.Map("/error", (HttpContext http) =>
