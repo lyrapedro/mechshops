@@ -4,25 +4,21 @@ namespace Oficina300.Domain.Shops;
 
 public class Schedule : Entity
 {
-    public int ShopId { get; set; }
-    public Shop Shop { get; set; }
+    public string ShopId { get; set; }
     public DateTime Date { get; set; }
-    public Guid CreatedBy { get; set; }
 
     public Schedule()
     {
         Validate();
     }
 
-    public Schedule(DateTime date, string createdBy, int shopId)
+    public Schedule(DateTime date, string shopId)
     {
         Guid validGuid;
         Date = date;
         ShopId = shopId;
         ModifiedAt = DateTime.UtcNow;
         CreatedAt = DateTime.UtcNow;
-        CreatedBy = Guid.TryParse(createdBy, out validGuid) ? validGuid : Guid.Empty;
-        ModifiedBy = Guid.Empty;
 
         Validate();
     }
@@ -34,11 +30,9 @@ public class Schedule : Entity
         AddNotifications(contract);
     }
 
-    public void EditInfo(DateTime date, string modifiedBy)
+    public void EditInfo(DateTime date)
     {
-        Guid validGuid;
         Date = date;
-        ModifiedBy = Guid.TryParse(modifiedBy, out validGuid) ? validGuid : Guid.Empty;
         ModifiedAt = DateTime.UtcNow;
 
         Validate();

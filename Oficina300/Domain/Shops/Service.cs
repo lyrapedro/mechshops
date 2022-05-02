@@ -4,8 +4,7 @@ namespace Oficina300.Domain.Shops;
 
 public class Service : Entity
 {
-    public int ShopId { get; set; }
-    public Shop Shop { get; set; }
+    public string ShopId { get; set; }
     public string Name { get; set; }
     public int WorkUnits { get; set; }
 
@@ -14,15 +13,13 @@ public class Service : Entity
         Validate();
     }
 
-    public Service(string name, int workUnits, int shopId, string createdBy)
+    public Service(string name, int workUnits, string shopId)
     {
         Guid validGuid;
         ShopId = shopId;
         Name = name;
         WorkUnits = workUnits;
         ModifiedAt = DateTime.UtcNow;
-        CreatedAt = DateTime.UtcNow;
-        ModifiedBy = Guid.TryParse(createdBy, out validGuid) ? validGuid : Guid.Empty;
 
         Validate();
     }
@@ -34,12 +31,10 @@ public class Service : Entity
         AddNotifications(contract);
     }
 
-    public void EditInfo(string name, int workUnits, string modifiedBy)
+    public void EditInfo(string name, int workUnits)
     {
-        Guid validGuid;
         Name = name;
         WorkUnits = workUnits;
-        ModifiedBy = Guid.TryParse(modifiedBy, out validGuid) ? validGuid : Guid.Empty;
         ModifiedAt = DateTime.UtcNow;
 
         Validate();

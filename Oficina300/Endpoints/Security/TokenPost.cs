@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
+using Oficina300.Endpoints.Shops;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -18,7 +19,13 @@ public class TokenPost
     {
         log.LogInformation("Getting token");
 
-        var user = await userManager.FindByEmailAsync(loginRequest.Cpf);
+        var invalidCnpj = !ShopHelper.IsCnpj(loginRequest.Cnpj);
+        if (invalidCnpj)
+            return Results.BadRequest();
+
+        var cnpjOnlyNumbers = ShopHelper.GetOnlyNumbers(loginRequest.Cnpj);
+
+        var user = await userManager.FindByEmailAsync(cnpjOnlyNumbers);
         if (user == null)
             Results.BadRequest();
         if (!await userManager.CheckPasswordAsync(user, loginRequest.Password))
@@ -27,8 +34,8 @@ public class TokenPost
         var claims = await userManager.GetClaimsAsync(user);
         var subject = new ClaimsIdentity(new Claim[]
         {
-            new Claim(ClaimTypes.Email, loginRequest.Cpf),
-            new Claim(ClaimTypes.NameIdentifier, user.Id),
+            new Claim(ClaimTypes.Email, cnpjOnlyNumbers),
+            new Claim("ShopId", user.Id),
         });
         subject.AddClaims(claims);
 

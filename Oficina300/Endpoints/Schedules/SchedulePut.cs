@@ -11,16 +11,16 @@ public class SchedulePut
     public static string[] Methods => new string[] { HttpMethod.Put.ToString() };
     public static Delegate Handle => Action;
 
-    [Authorize(Policy = "EmployeePolicy")]
+    [Authorize(Policy = "ShopPolicy")]
     public static async Task<IResult> Action([FromRoute] int id, ScheduleRequest scheduleRequest, HttpContext http, ApplicationDbContext context)
     {
-        var userId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;    
-        var schedule = context.Schedules.FirstOrDefault(s => s.Id == id);
+        var shopId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;    
+        var schedule = context.Schedules.FirstOrDefault(s => s.Id == id && s.ShopId == shopId);
 
         if (schedule == null)
             return Results.NotFound("Schedule does not exist");
 
-        schedule.EditInfo(scheduleRequest.Date, userId);
+        schedule.EditInfo(scheduleRequest.Date);
 
         if (!schedule.IsValid)
             return Results.ValidationProblem(schedule.Notifications.ConvertToProblemDetails());

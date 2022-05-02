@@ -1,6 +1,4 @@
-﻿using Flunt.Validations;
-
-namespace Oficina300.Domain.Shops;
+﻿namespace Oficina300.Domain.Shops;
 
 public class Demand
 {
@@ -10,8 +8,9 @@ public class Demand
     public int ServiceId { get; set; }
     public Service Service { get; set; }
 
-    public Demand(DateTime date, string userId, int shopId)
+    public Demand(int serviceId, int scheduleId)
     {
-
+        ScheduleId = scheduleId;
+        ServiceId = serviceId;
     }
 }

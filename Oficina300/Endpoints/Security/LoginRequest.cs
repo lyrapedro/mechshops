@@ -1,3 +1,3 @@
 ﻿namespace Oficina300.Endpoints.Security;
 
-public record LoginRequest(string Cpf, string Password);
+public record LoginRequest(string Cnpj, string Password);

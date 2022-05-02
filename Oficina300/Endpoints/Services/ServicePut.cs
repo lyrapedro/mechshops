@@ -11,16 +11,16 @@ public class ServicePut
     public static string[] Methods => new string[] { HttpMethod.Put.ToString() };
     public static Delegate Handle => Action;
 
-    [Authorize(Policy = "EmployeePolicy")]
+    [Authorize(Policy = "ShopPolicy")]
     public static async Task<IResult> Action([FromRoute] int id, ServiceRequest serviceRequest, HttpContext http, ApplicationDbContext context)
     {
-        var userId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;    
-        var service = context.Services.FirstOrDefault(s => s.Id == id);
+        var shopId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;    
+        var service = context.Services.FirstOrDefault(s => s.Id == id && s.ShopId == shopId);
 
         if (service == null)
             return Results.NotFound("Service does not exist");
 
-        service.EditInfo(serviceRequest.Name, serviceRequest.WorkUnits, userId);
+        service.EditInfo(serviceRequest.Name, serviceRequest.WorkUnits);
 
         if (!service.IsValid)
             return Results.ValidationProblem(service.Notifications.ConvertToProblemDetails());

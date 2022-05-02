@@ -8,7 +8,6 @@ namespace Oficina300.Infra.Data;
 
 public class ApplicationDbContext : IdentityDbContext<IdentityUser>
 {
-    public DbSet<Shop> Shops { get; set; }
     public DbSet<Service> Services { get; set; }
     public DbSet<Schedule> Schedules { get; set; }
     public DbSet<Demand> Demands { get; set; }
@@ -20,11 +19,6 @@ public class ApplicationDbContext : IdentityDbContext<IdentityUser>
         base.OnModelCreating(builder);
 
         builder.Ignore<Notification>();
-
-        builder.Entity<Shop>()
-            .Property(p => p.Name).IsRequired();
-        builder.Entity<Shop>()
-            .Property(p => p.WorkLoad).IsRequired();
 
         builder.Entity<Service>()
             .Property(p => p.Name).IsRequired();

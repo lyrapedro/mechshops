@@ -8,20 +8,16 @@ namespace Oficina300.Endpoints.Services;
 
 public class ServicePost
 {
-    public static string Template => "shops/{shopId:int}/services";
+    public static string Template => "shops/services";
     public static string[] Methods => new string[] { HttpMethod.Post.ToString() };
     public static Delegate Handle => Action;
 
-    [Authorize(Policy = "EmployeePolicy")]
-    public static async Task<IResult> Action([FromRoute] int shopId, HttpContext http, ServiceRequest serviceRequest, ApplicationDbContext context)
+    [Authorize(Policy = "ShopPolicy")]
+    public static async Task<IResult> Action(HttpContext http, ServiceRequest serviceRequest, ApplicationDbContext context)
     {
-        var userId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
-        var shop = context.Shops.FirstOrDefault(s => s.Id == shopId);
+        var shopId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
 
-        if (shop == null)
-            return Results.NotFound("Service does not exist");
-
-        var service = new Service(serviceRequest.Name, serviceRequest.WorkUnits, shopId, userId);
+        var service = new Service(serviceRequest.Name, serviceRequest.WorkUnits, shopId);
 
         if (!service.IsValid)
             return Results.ValidationProblem(service.Notifications.ConvertToProblemDetails());

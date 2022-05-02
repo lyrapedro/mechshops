@@ -3,7 +3,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
-using Oficina300.Endpoints.Employees;
+using Oficina300.Endpoints.Schedules;
+using Oficina300.Endpoints.Security;
 using Oficina300.Endpoints.Services;
 using Oficina300.Endpoints.Shops;
 using Oficina300.Infra.Data;
@@ -41,7 +42,7 @@ builder.Services.AddAuthorization(options =>
         .AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme)
         .RequireAuthenticatedUser()
         .Build();
-    options.AddPolicy("EmployeePolicy", p => p.RequireAuthenticatedUser().RequireClaim("ShopId"));
+    options.AddPolicy("ShopPolicy", p => p.RequireAuthenticatedUser().RequireClaim("ShopId"));
 });
 builder.Services.AddAuthentication(x =>
 {
@@ -62,8 +63,6 @@ builder.Services.AddAuthentication(x =>
     };
 });
 
-builder.Services.AddScoped<QueryAllUsersWithClaimName>();
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -79,13 +78,16 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.MapMethods(EmployeePost.Template, EmployeePost.Methods, EmployeePost.Handle);
-app.MapMethods(EmployeeGetAll.Template, EmployeeGetAll.Methods, EmployeeGetAll.Handle);
+app.MapMethods(TokenPost.Template, TokenPost.Methods, TokenPost.Handle);
 
 app.MapMethods(ShopPost.Template, ShopPost.Methods, ShopPost.Handle);
-app.MapMethods(ShopGetAll.Template, ShopGetAll.Methods, ShopGetAll.Handle);
 app.MapMethods(ShopPut.Template, ShopPut.Methods, ShopPut.Handle);
 app.MapMethods(ShopDelete.Template, ShopDelete.Methods, ShopDelete.Handle);
+
+app.MapMethods(SchedulePost.Template, SchedulePost.Methods, SchedulePost.Handle);
+app.MapMethods(ScheduleGetAll.Template, ScheduleGetAll.Methods, ScheduleGetAll.Handle);
+app.MapMethods(SchedulePut.Template, SchedulePut.Methods, SchedulePut.Handle);
+app.MapMethods(ScheduleDelete.Template, ScheduleDelete.Methods, ScheduleDelete.Handle);
 
 app.MapMethods(ServicePost.Template, ServicePost.Methods, ServicePost.Handle);
 app.MapMethods(ServiceGetAll.Template, ServiceGetAll.Methods, ServiceGetAll.Handle);

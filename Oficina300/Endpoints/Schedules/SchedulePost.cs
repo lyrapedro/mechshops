@@ -8,27 +8,35 @@ namespace Oficina300.Endpoints.Schedules;
 
 public class SchedulePost
 {
-    public static string Template => "shops/{shopId:int}/schedules";
+    public static string Template => "shops/schedules";
     public static string[] Methods => new string[] { HttpMethod.Post.ToString() };
     public static Delegate Handle => Action;
 
-    [Authorize(Policy = "EmployeePolicy")]
-    public static async Task<IResult> Action([FromRoute] int shopId, HttpContext http, ScheduleRequest scheduleRequest, ApplicationDbContext context)
+    [Authorize(Policy = "ShopPolicy")]
+    public static async Task<IResult> Action(HttpContext http, ScheduleRequest scheduleRequest, ApplicationDbContext context)
     {
-        var userId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
-        var shop = context.Shops.FirstOrDefault(s => s.Id == shopId);
+        var shopId = http.User.Claims.First(c => c.Type == "ShopId").Value;
 
-        if (shop == null)
-            return Results.NotFound("Schedule does not exist");
-
-        var schedule = new Schedule(scheduleRequest.Date, userId, shopId);
+        var schedule = new Schedule(scheduleRequest.Date, shopId);
         if (!schedule.IsValid)
             return Results.ValidationProblem(schedule.Notifications.ConvertToProblemDetails());
 
+        var services = context.Services.Where(s => scheduleRequest.Services.Contains(s.Name) && s.ShopId == shopId).ToList();
+
+        if (!services.Any())
+            return Results.NotFound("Services does not exists");
+
         await context.Schedules.AddAsync(schedule);
+        await context.SaveChangesAsync();
+
+        foreach (var service in services)
+        {
+            var demand = new Demand(service.Id, schedule.Id);
+            await context.Demands.AddAsync(demand);
+        }
 
         await context.SaveChangesAsync();
 
-        return Results.Created($"/schedules/{schedule.Id}", schedule.Id);
+        return Results.Created($"/shops/schedules/{schedule.Id}", schedule.Id);
     }
 }

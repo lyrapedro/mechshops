@@ -12,8 +12,8 @@ using Oficina300.Infra.Data;
 namespace Oficina300.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220501011822_DomainsAndIdentitys")]
-    partial class DomainsAndIdentitys
+    [Migration("20220502012341_DefinitiveMigration")]
+    partial class DefinitiveMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -256,9 +256,14 @@ namespace Oficina300.Migrations
                     b.Property<int>("ScheduleId")
                         .HasColumnType("int");
 
+                    b.Property<int>("ServiceId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ScheduleId");
+
+                    b.HasIndex("ServiceId");
 
                     b.ToTable("Demands");
                 });
@@ -274,24 +279,18 @@ namespace Oficina300.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("CreatedBy")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("ShopId")
-                        .HasColumnType("int");
+                    b.Property<string>("ShopId")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("ShopId");
 
                     b.ToTable("Schedules");
                 });
@@ -310,55 +309,22 @@ namespace Oficina300.Migrations
                     b.Property<DateTime>("ModifiedAt")
                         .HasColumnType("datetime2");
 
-                    b.Property<Guid>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<int>("ShopId")
-                        .HasColumnType("int");
+                    b.Property<string>("ShopId")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<int>("WorkUnits")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ShopId");
-
                     b.ToTable("Services");
-                });
-
-            modelBuilder.Entity("Oficina300.Domain.Shops.Shop", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ModifiedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<Guid>("ModifiedBy")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("WorkLoad")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Shops");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -420,29 +386,15 @@ namespace Oficina300.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Oficina300.Domain.Shops.Service", "Service")
+                        .WithMany()
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Schedule");
-                });
 
-            modelBuilder.Entity("Oficina300.Domain.Shops.Schedule", b =>
-                {
-                    b.HasOne("Oficina300.Domain.Shops.Shop", "Shop")
-                        .WithMany()
-                        .HasForeignKey("ShopId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Shop");
-                });
-
-            modelBuilder.Entity("Oficina300.Domain.Shops.Service", b =>
-                {
-                    b.HasOne("Oficina300.Domain.Shops.Shop", "Shop")
-                        .WithMany()
-                        .HasForeignKey("ShopId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Shop");
+                    b.Navigation("Service");
                 });
 #pragma warning restore 612, 618
         }
