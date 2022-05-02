@@ -14,8 +14,8 @@ public class Schedule : Entity
         Guid validGuid;
         Date = date;
         ShopId = shopId;
-        ModifiedAt = DateTime.UtcNow;
-        CreatedAt = DateTime.UtcNow;
+        ModifiedAt = DateTime.Now;
+        CreatedAt = DateTime.Now;
 
         Validate(shopTotalWorkLoad, workLoadUsed, workLoadNecessary);
     }
@@ -23,22 +23,22 @@ public class Schedule : Entity
     public void EditInfo(DateTime date, int shopTotalWorkLoad, int workLoadUsed, int workLoadNecessary = 0)
     {
         Date = date;
-        ModifiedAt = DateTime.UtcNow;
+        ModifiedAt = DateTime.Now;
 
         Validate(shopTotalWorkLoad, workLoadUsed, workLoadNecessary);
     }
 
     private void Validate(int shopTotalWorkLoad, int workLoadUsed, int workLoadNecessary)
     {
-        DateTime todayDateConverted = ConvertUtcToLocalDate(DateTime.UtcNow).Date;
+        DateTime todayDate = DateTime.Now;
 
-        if (Date.Date < todayDateConverted.Date)
+        if (Date.Date < todayDate.Date)
             AddNotification("Date", "Cannot schedule for past dates");
 
         if (IsWeekend(Date))
             AddNotification("Date", "Cannot schedule for weekend");
 
-        if (!HaveEnoughWorkLoad(shopTotalWorkLoad, workLoadUsed, workLoadNecessary))
+        if (NoHaveEnoughWorkLoad(shopTotalWorkLoad, workLoadUsed, workLoadNecessary))
             AddNotification("WorkLoad", "Does not have enough workload for this day");
     }
 
@@ -48,16 +48,11 @@ public class Schedule : Entity
         return isWeekend;
     }
 
-    public DateTime ConvertUtcToLocalDate(DateTime dateToConvert)
-    {
-        return TimeZoneInfo.ConvertTime(dateToConvert, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
-    }
-
-    public bool HaveEnoughWorkLoad(int shopTotalWorkLoad, int workLoadUsed, int workLoadNecessary)
+    public bool NoHaveEnoughWorkLoad(int shopTotalWorkLoad, int workLoadUsed, int workLoadNecessary)
     {
         if(workLoadNecessary == 0)
             return shopTotalWorkLoad > workLoadUsed;
         else
-            return (shopTotalWorkLoad - workLoadUsed) >= workLoadNecessary;
+            return !((shopTotalWorkLoad - workLoadUsed) >= workLoadNecessary);
     }
 }

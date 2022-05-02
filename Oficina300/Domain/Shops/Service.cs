@@ -19,7 +19,7 @@ public class Service : Entity
         ShopId = shopId;
         Name = name;
         WorkUnits = workUnits;
-        ModifiedAt = DateTime.UtcNow;
+        ModifiedAt = DateTime.Now;
 
         Validate();
     }
@@ -35,7 +35,7 @@ public class Service : Entity
     {
         Name = name;
         WorkUnits = workUnits;
-        ModifiedAt = DateTime.UtcNow;
+        ModifiedAt = DateTime.Now;
 
         Validate();
     }

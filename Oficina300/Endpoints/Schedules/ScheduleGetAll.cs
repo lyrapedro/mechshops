@@ -17,7 +17,7 @@ public class ScheduleGetAll
     {
         var shopId = http.User.Claims.First(c => c.Type == "ShopId").Value;
 
-        var currentDate = TimeZoneInfo.ConvertTime(DateTime.UtcNow, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
+        var currentDate = DateTime.Now;
         var maxDate = currentDate.AddDays(5);
 
         var schedules = context.Schedules.Where(s => s.ShopId == shopId).ToList();
