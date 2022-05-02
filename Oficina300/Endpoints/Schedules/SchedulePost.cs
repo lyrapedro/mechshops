@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 using Oficina300.Domain.Shops;
 using Oficina300.Infra.Data;
-using System.Security.Claims;
 
 namespace Oficina300.Endpoints.Schedules;
 
@@ -16,8 +14,11 @@ public class SchedulePost
     public static async Task<IResult> Action(HttpContext http, ScheduleRequest scheduleRequest, ApplicationDbContext context)
     {
         var shopId = http.User.Claims.First(c => c.Type == "ShopId").Value;
+        int shopTotalWorkLoad = Int32.Parse(http.User.Claims.First(c => c.Type == "WorkLoad").Value);
 
-        var schedule = new Schedule(scheduleRequest.Date, shopId);
+        var workLoadUsed = context.Demands.Where(d => d.Schedule.ShopId == shopId && d.Schedule.Date.Date == scheduleRequest.Date.Date).Sum(s => s.Service.WorkUnits);
+
+        var schedule = new Schedule(scheduleRequest.Date, shopId, shopTotalWorkLoad, workLoadUsed);
         if (!schedule.IsValid)
             return Results.ValidationProblem(schedule.Notifications.ConvertToProblemDetails());
 

@@ -14,13 +14,25 @@ public class SchedulePut
     [Authorize(Policy = "ShopPolicy")]
     public static async Task<IResult> Action([FromRoute] int id, ScheduleRequest scheduleRequest, HttpContext http, ApplicationDbContext context)
     {
-        var shopId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;    
+        var shopId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+        int shopTotalWorkLoad = Int32.Parse(http.User.Claims.First(c => c.Type == "WorkLoad").Value);
+
         var schedule = context.Schedules.FirstOrDefault(s => s.Id == id && s.ShopId == shopId);
 
         if (schedule == null)
-            return Results.NotFound("Schedule does not exist");
+            Results.NotFound("Schedule dos not exists");
 
-        schedule.EditInfo(scheduleRequest.Date);
+        var shopDemands = context.Demands.Where(d => d.Schedule.ShopId == shopId).ToList();
+
+        var scheduleWorkUnits = shopDemands.Where(d => d.ScheduleId == schedule.Id).Sum(d => d.Service.WorkUnits);
+
+        int workLoadUsed;
+        if (scheduleRequest.Date.Date == schedule.Date.Date)
+            workLoadUsed = scheduleWorkUnits * (-1);
+
+        workLoadUsed =+ shopDemands.Where(d => d.Schedule.ShopId == shopId && d.Schedule.Date.Date == scheduleRequest.Date.Date).Sum(s => s.Service.WorkUnits);
+
+        schedule.EditInfo(scheduleRequest.Date, shopTotalWorkLoad, workLoadUsed);
 
         if (!schedule.IsValid)
             return Results.ValidationProblem(schedule.Notifications.ConvertToProblemDetails());
