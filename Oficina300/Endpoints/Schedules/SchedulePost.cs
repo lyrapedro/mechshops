@@ -18,14 +18,16 @@ public class SchedulePost
 
         var workLoadUsed = context.Demands.Where(d => d.Schedule.ShopId == shopId && d.Schedule.Date.Date == scheduleRequest.Date.Date).Sum(s => s.Service.WorkUnits);
 
-        var schedule = new Schedule(scheduleRequest.Date, shopId, shopTotalWorkLoad, workLoadUsed);
-        if (!schedule.IsValid)
-            return Results.ValidationProblem(schedule.Notifications.ConvertToProblemDetails());
-
         var services = context.Services.Where(s => scheduleRequest.Services.Contains(s.Name) && s.ShopId == shopId).ToList();
 
         if (!services.Any())
             return Results.NotFound("Services does not exists");
+
+        var workLoadNecessary = services.Sum(s => s.WorkUnits);
+
+        var schedule = new Schedule(scheduleRequest.Date, shopId, shopTotalWorkLoad, workLoadUsed, workLoadNecessary);
+        if (!schedule.IsValid)
+            return Results.ValidationProblem(schedule.Notifications.ConvertToProblemDetails());
 
         await context.Schedules.AddAsync(schedule);
         await context.SaveChangesAsync();

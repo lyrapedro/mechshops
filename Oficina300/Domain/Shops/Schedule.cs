@@ -9,7 +9,7 @@ public class Schedule : Entity
 
     public Schedule() {}
 
-    public Schedule(DateTime date, string shopId, int shopTotalWorkLoad, int workLoadUsed)
+    public Schedule(DateTime date, string shopId, int shopTotalWorkLoad, int workLoadUsed, int workLoadNecessary)
     {
         Guid validGuid;
         Date = date;
@@ -17,34 +17,47 @@ public class Schedule : Entity
         ModifiedAt = DateTime.UtcNow;
         CreatedAt = DateTime.UtcNow;
 
-        Validate(shopTotalWorkLoad, workLoadUsed);
+        Validate(shopTotalWorkLoad, workLoadUsed, workLoadNecessary);
     }
 
-    public void EditInfo(DateTime date, int shopTotalWorkLoad, int workLoadUsed)
+    public void EditInfo(DateTime date, int shopTotalWorkLoad, int workLoadUsed, int workLoadNecessary = 0)
     {
         Date = date;
         ModifiedAt = DateTime.UtcNow;
 
-        Validate(shopTotalWorkLoad, workLoadUsed);
+        Validate(shopTotalWorkLoad, workLoadUsed, workLoadNecessary);
     }
 
-    private void Validate(int shopTotalWorkLoad, int workLoadUsed)
+    private void Validate(int shopTotalWorkLoad, int workLoadUsed, int workLoadNecessary)
     {
         DateTime todayDateConverted = ConvertUtcToLocalDate(DateTime.UtcNow).Date;
 
-        var contract = new Contract<Schedule>()
-            .IsGreaterOrEqualsThan(Date.Date, todayDateConverted, "Date")
-            .IsTrue(haveEnoughWorkLoad(shopTotalWorkLoad, workLoadUsed), "Date");
-        AddNotifications(contract);
+        if (Date.Date < todayDateConverted.Date)
+            AddNotification("Date", "Cannot schedule for past dates");
+
+        if (IsWeekend(Date))
+            AddNotification("Date", "Cannot schedule for weekend");
+
+        if (!HaveEnoughWorkLoad(shopTotalWorkLoad, workLoadUsed, workLoadNecessary))
+            AddNotification("WorkLoad", "Does not have enough workload for this day");
+    }
+
+    public bool IsWeekend(DateTime date)
+    {
+        bool isWeekend = (date.DayOfWeek == DayOfWeek.Sunday) || (date.DayOfWeek == DayOfWeek.Saturday);
+        return isWeekend;
     }
 
     public DateTime ConvertUtcToLocalDate(DateTime dateToConvert)
     {
-        return TimeZoneInfo.ConvertTime(dateToConvert, TimeZoneInfo.FindSystemTimeZoneById("Central Brazilian Standard Time"));
+        return TimeZoneInfo.ConvertTime(dateToConvert, TimeZoneInfo.FindSystemTimeZoneById("E. South America Standard Time"));
     }
 
-    public bool haveEnoughWorkLoad(int shopTotalWorkLoad, int workLoadUsed)
+    public bool HaveEnoughWorkLoad(int shopTotalWorkLoad, int workLoadUsed, int workLoadNecessary)
     {
-        return shopTotalWorkLoad > workLoadUsed;
+        if(workLoadNecessary == 0)
+            return shopTotalWorkLoad > workLoadUsed;
+        else
+            return (shopTotalWorkLoad - workLoadUsed) >= workLoadNecessary;
     }
 }

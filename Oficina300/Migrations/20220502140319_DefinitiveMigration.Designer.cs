@@ -12,7 +12,7 @@ using Oficina300.Infra.Data;
 namespace Oficina300.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220502012341_DefinitiveMigration")]
+    [Migration("20220502140319_DefinitiveMigration")]
     partial class DefinitiveMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
