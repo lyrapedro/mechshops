@@ -1,6 +1,4 @@
-﻿using Flunt.Validations;
-
-namespace Oficina300.Domain.Shops;
+﻿namespace Oficina300.Domain.Shops;
 
 public class Schedule : Entity
 {
@@ -11,7 +9,6 @@ public class Schedule : Entity
 
     public Schedule(DateTime date, string shopId, int shopTotalWorkLoad, int workLoadUsed, int workLoadNecessary)
     {
-        Guid validGuid;
         Date = date;
         ShopId = shopId;
         ModifiedAt = DateTime.Now;

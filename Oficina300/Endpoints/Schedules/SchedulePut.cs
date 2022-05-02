@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Oficina300.Infra.Data;
+using System.Globalization;
 using System.Security.Claims;
 
 namespace Oficina300.Endpoints.Schedules;
@@ -17,7 +18,11 @@ public class SchedulePut
         var shopId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
         int shopTotalWorkLoad = Int32.Parse(http.User.Claims.First(c => c.Type == "WorkLoad").Value);
 
-        bool increasedWorkLoad = scheduleRequest.Date.DayOfWeek == DayOfWeek.Thursday || scheduleRequest.Date.DayOfWeek == DayOfWeek.Friday;
+        DateTime validDate;
+        CultureInfo provider = new CultureInfo("pt-BR");
+        DateTime scheduleDate = DateTime.TryParse(scheduleRequest.Date, provider, DateTimeStyles.None, out validDate) ? validDate : DateTime.Now;
+
+        bool increasedWorkLoad = scheduleDate.DayOfWeek == DayOfWeek.Thursday || scheduleDate.DayOfWeek == DayOfWeek.Friday;
 
         if (increasedWorkLoad)
             shopTotalWorkLoad = shopTotalWorkLoad + (int)(shopTotalWorkLoad * 0.3);
@@ -32,12 +37,12 @@ public class SchedulePut
         var scheduleWorkUnits = shopDemands.Where(d => d.ScheduleId == schedule.Id).Sum(d => d.Service.WorkUnits);
 
         int workLoadUsed;
-        if (scheduleRequest.Date.Date == schedule.Date.Date)
+        if (scheduleDate.Date == schedule.Date.Date)
             workLoadUsed = scheduleWorkUnits * (-1);
 
-        workLoadUsed =+ shopDemands.Where(d => d.Schedule.ShopId == shopId && d.Schedule.Date.Date == scheduleRequest.Date.Date).Sum(s => s.Service.WorkUnits);
+        workLoadUsed =+ shopDemands.Where(d => d.Schedule.ShopId == shopId && d.Schedule.Date.Date == scheduleDate.Date).Sum(s => s.Service.WorkUnits);
 
-        schedule.EditInfo(scheduleRequest.Date, shopTotalWorkLoad, workLoadUsed);
+        schedule.EditInfo(scheduleDate, shopTotalWorkLoad, workLoadUsed);
 
         if (!schedule.IsValid)
             return Results.ValidationProblem(schedule.Notifications.ConvertToProblemDetails());

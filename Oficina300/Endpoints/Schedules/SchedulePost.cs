@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Oficina300.Domain.Shops;
 using Oficina300.Infra.Data;
+using System.Globalization;
 
 namespace Oficina300.Endpoints.Schedules;
 
@@ -16,12 +17,16 @@ public class SchedulePost
         var shopId = http.User.Claims.First(c => c.Type == "ShopId").Value;
         int shopTotalWorkLoad = Int32.Parse(http.User.Claims.First(c => c.Type == "WorkLoad").Value);
 
-        bool increasedWorkLoad = scheduleRequest.Date.DayOfWeek == DayOfWeek.Thursday || scheduleRequest.Date.DayOfWeek == DayOfWeek.Friday;
+        DateTime validDate;
+        CultureInfo provider = new CultureInfo("pt-BR");
+        DateTime scheduleDate = DateTime.TryParse(scheduleRequest.Date, provider, DateTimeStyles.None, out validDate) ? validDate : DateTime.Now;
+
+        bool increasedWorkLoad = scheduleDate.DayOfWeek == DayOfWeek.Thursday || scheduleDate.DayOfWeek == DayOfWeek.Friday;
 
         if (increasedWorkLoad)
             shopTotalWorkLoad = shopTotalWorkLoad + (int)(shopTotalWorkLoad * 0.3);
 
-        var workLoadUsed = context.Demands.Where(d => d.Schedule.ShopId == shopId && d.Schedule.Date.Date == scheduleRequest.Date.Date).Sum(s => s.Service.WorkUnits);
+        var workLoadUsed = context.Demands.Where(d => d.Schedule.ShopId == shopId && d.Schedule.Date.Date == scheduleDate.Date).Sum(s => s.Service.WorkUnits);
 
         var services = context.Services.Where(s => scheduleRequest.Services.Contains(s.Name) && s.ShopId == shopId).ToList();
 
@@ -30,7 +35,7 @@ public class SchedulePost
 
         var workLoadNecessary = services.Sum(s => s.WorkUnits);
 
-        var schedule = new Schedule(scheduleRequest.Date, shopId, shopTotalWorkLoad, workLoadUsed, workLoadNecessary);
+        var schedule = new Schedule(scheduleDate, shopId, shopTotalWorkLoad, workLoadUsed, workLoadNecessary);
         if (!schedule.IsValid)
             return Results.ValidationProblem(schedule.Notifications.ConvertToProblemDetails());
 
