@@ -84,6 +84,8 @@ app.MapMethods(ShopPost.Template, ShopPost.Methods, ShopPost.Handle);
 app.MapMethods(ShopPut.Template, ShopPut.Methods, ShopPut.Handle);
 app.MapMethods(ShopDelete.Template, ShopDelete.Methods, ShopDelete.Handle);
 
+app.MapMethods(GetWorkLoadByDay.Template, GetWorkLoadByDay.Methods, GetWorkLoadByDay.Handle);
+
 app.MapMethods(SchedulePost.Template, SchedulePost.Methods, SchedulePost.Handle);
 app.MapMethods(ScheduleGetAll.Template, ScheduleGetAll.Methods, ScheduleGetAll.Handle);
 app.MapMethods(SchedulePut.Template, SchedulePut.Methods, SchedulePut.Handle);

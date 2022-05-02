@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Oficina300.Infra.Data;
-using System.Security.Claims;
 
 namespace Oficina300.Endpoints.Shops;
 
