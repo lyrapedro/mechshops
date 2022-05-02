@@ -25,12 +25,15 @@ public class ScheduleGetAll
 
         var schedulesIds = schedules.Select(s => s.Id).ToList();
 
+        List<ScheduleResponse> response = new List<ScheduleResponse>();
+
         var demands = context.Demands.Include(d => d.Service).Where(d => schedulesIds.Contains(d.ScheduleId)).ToList();
 
-        var response = schedules.Select(s => new ScheduleResponse(s.Id, s.Date.Date.ToString("dd/MM/yy"), s.ModifiedAt, s.CreatedAt,
-            demands.Where(d => d.ScheduleId == s.Id).Select(d => d.Service.Name).ToList()));
+        if(demands.Any())
+            response = schedules.Select(s => new ScheduleResponse(s.Id, s.Date.Date.ToString("dd/MM/yy"), s.ModifiedAt, s.CreatedAt,
+                demands.Where(d => d.ScheduleId == s.Id).Select(d => d.Service.Name).ToList())).ToList();
 
-        response = response.OrderBy(r => r.date).ToList();
+        response.OrderBy(r => r.date).ToList();
 
         return Results.Ok(response);
     }

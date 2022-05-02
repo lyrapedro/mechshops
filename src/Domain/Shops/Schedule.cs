@@ -17,14 +17,6 @@ public class Schedule : Entity
         Validate(shopTotalWorkLoad, workLoadUsed, workLoadNecessary);
     }
 
-    public void EditInfo(DateTime date, int shopTotalWorkLoad, int workLoadUsed, int workLoadNecessary = 0)
-    {
-        Date = date;
-        ModifiedAt = DateTime.Now;
-
-        Validate(shopTotalWorkLoad, workLoadUsed, workLoadNecessary);
-    }
-
     private void Validate(int shopTotalWorkLoad, int workLoadUsed, int workLoadNecessary)
     {
         DateTime todayDate = DateTime.Now;

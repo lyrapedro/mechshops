@@ -15,7 +15,7 @@ public class SchedulePost
     public static async Task<IResult> Action(HttpContext http, ScheduleRequest scheduleRequest, ApplicationDbContext context)
     {
         var shopId = http.User.Claims.First(c => c.Type == "ShopId").Value;
-        int shopTotalWorkLoad = Int32.Parse(http.User.Claims.First(c => c.Type == "WorkLoad").Value);
+        int shopTotalWorkLoad = int.Parse(http.User.Claims.First(c => c.Type == "WorkLoad").Value);
 
         DateTime validDate;
         CultureInfo provider = new CultureInfo("pt-BR");

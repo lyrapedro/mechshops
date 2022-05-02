@@ -6,23 +6,29 @@ using System.Security.Claims;
 
 namespace MechShops.Endpoints.Shops;
 
-public class GetWorkLoadByDay
+public class GetWorkLoadByDayOrInterval
 {
     public static string Template => "shops/workload";
     public static string[] Methods => new string[] { HttpMethod.Get.ToString() };
     public static Delegate Handle => Action;
 
     [Authorize(Policy = "ShopPolicy")]
-    public static IResult Action(HttpContext http, ApplicationDbContext context)
+    public static IResult Action([FromQuery] string startDate, [FromQuery] string endDate, HttpContext http, ApplicationDbContext context)
     {
-        var shopId = http.User.Claims.First(c => c.Type == "ShopId").Value;
-        var workLoad = Int32.Parse(http.User.Claims.First(c => c.Type == "WorkLoad").Value);
+        DateTime? validStartDate = ShopHelper.DateParse(startDate);
+        DateTime? validEndDate = ShopHelper.DateParse(endDate);
 
-        var currentDate = DateTime.Now;
-        var maxDate = currentDate.AddDays(5);
+        if (validStartDate == null)
+            validStartDate = DateTime.Now;
+
+        if (validEndDate == null)
+            validEndDate = DateTime.Now.AddDays(5);
+
+        var shopId = http.User.Claims.First(c => c.Type == "ShopId").Value;
+        var shopTotalWorkLoad = int.Parse(http.User.Claims.First(c => c.Type == "WorkLoad").Value);
 
         var schedules = context.Schedules.Where(s => s.ShopId == shopId).ToList();
-        schedules = schedules.Where(s => s.Date.Date >= currentDate.Date && s.Date.Date <= maxDate.Date).ToList();
+        schedules = schedules.Where(s => s.Date.Date >= validStartDate.Value.Date && s.Date.Date <= validEndDate.Value.Date).ToList();
 
         var schedulesIds = schedules.Select(s => s.Id).ToList();
 
@@ -35,7 +41,12 @@ public class GetWorkLoadByDay
         foreach (var date in schedulesDates)
         {
             var workLoadUsed = demands.Where(d => d.Schedule.Date.Date == date.Key).Sum(s => s.Service.WorkUnits);
-            var workLoadAvailable = (workLoad - workLoadUsed) >= 0 ? (workLoad - workLoadUsed) : 0;
+            var workLoadAvailable = (shopTotalWorkLoad - workLoadUsed) >= 0 ? (shopTotalWorkLoad - workLoadUsed) : 0;
+            bool increasedWorkLoad = date.Key.DayOfWeek == DayOfWeek.Thursday || date.Key.DayOfWeek == DayOfWeek.Friday;
+
+            if (increasedWorkLoad)
+                workLoadAvailable += (int)(shopTotalWorkLoad * 0.3);
+
             var obj = new WorkLoadResponse(date.Key.ToString("dd/MM/yy"), workLoadAvailable, workLoadUsed);
             response.Add(obj);
         }

@@ -1,4 +1,6 @@
-﻿namespace MechShops.Endpoints.Shops;
+﻿using System.Globalization;
+
+namespace MechShops.Endpoints.Shops;
 
 public class ShopHelper
 {
@@ -42,5 +44,12 @@ public class ShopHelper
 		cnpj = cnpj.Replace(".", "").Replace("-", "").Replace("/", "");
 
 		return cnpj;
+	}
+
+	public static DateTime? DateParse(string date)
+    {
+		DateTime validDate;
+		CultureInfo provider = new CultureInfo("pt-BR");
+		return DateTime.TryParse(date, provider, DateTimeStyles.None, out validDate) ? validDate : null;
 	}
 }
