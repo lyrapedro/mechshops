@@ -17,6 +17,11 @@ public class SchedulePut
         var shopId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
         int shopTotalWorkLoad = Int32.Parse(http.User.Claims.First(c => c.Type == "WorkLoad").Value);
 
+        bool increasedWorkLoad = scheduleRequest.Date.DayOfWeek == DayOfWeek.Thursday || scheduleRequest.Date.DayOfWeek == DayOfWeek.Friday;
+
+        if (increasedWorkLoad)
+            shopTotalWorkLoad = shopTotalWorkLoad + (int)(shopTotalWorkLoad * 0.3);
+
         var schedule = context.Schedules.FirstOrDefault(s => s.Id == id && s.ShopId == shopId);
 
         if (schedule == null)
