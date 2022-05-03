@@ -8,7 +8,7 @@ namespace MechShops.Endpoints.Services;
 
 public class ServicePost
 {
-    public static string Template => "shops/services";
+    public static string Template => "/services";
     public static string[] Methods => new string[] { HttpMethod.Post.ToString() };
     public static Delegate Handle => Action;
 

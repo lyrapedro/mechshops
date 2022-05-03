@@ -6,7 +6,7 @@ namespace MechShops.Endpoints.Services;
 
 public class ServiceDelete
 {
-    public static string Template => "shops/services/{id:int}";
+    public static string Template => "/services/{id:int}";
     public static string[] Methods => new string[] { HttpMethod.Delete.ToString() };
     public static Delegate Handle => Action;
 

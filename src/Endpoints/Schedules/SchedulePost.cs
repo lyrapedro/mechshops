@@ -7,7 +7,7 @@ namespace MechShops.Endpoints.Schedules;
 
 public class SchedulePost
 {
-    public static string Template => "shops/schedules";
+    public static string Template => "/schedules";
     public static string[] Methods => new string[] { HttpMethod.Post.ToString() };
     public static Delegate Handle => Action;
 

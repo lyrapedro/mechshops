@@ -7,7 +7,7 @@ namespace MechShops.Endpoints.Schedules;
 
 public class ScheduleDelete
 {
-    public static string Template => "/shops/schedules/{id:int}";
+    public static string Template => "/schedules/{id:int}";
     public static string[] Methods => new string[] { HttpMethod.Delete.ToString() };
     public static Delegate Handle => Action;
 

@@ -8,7 +8,7 @@ namespace MechShops.Endpoints.Schedules;
 
 public class ScheduleGetAll
 {
-    public static string Template => "shops/schedules";
+    public static string Template => "/schedules";
     public static string[] Methods => new string[] { HttpMethod.Get.ToString() };
     public static Delegate Handle => Action;
 

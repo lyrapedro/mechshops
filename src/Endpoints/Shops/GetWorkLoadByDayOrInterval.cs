@@ -8,7 +8,7 @@ namespace MechShops.Endpoints.Shops;
 
 public class GetWorkLoadByDayOrInterval
 {
-    public static string Template => "shops/workload";
+    public static string Template => "/workload";
     public static string[] Methods => new string[] { HttpMethod.Get.ToString() };
     public static Delegate Handle => Action;
 

@@ -7,7 +7,7 @@ namespace MechShops.Endpoints.Services;
 
 public class ServiceGetAll
 {
-    public static string Template => "shops/services";
+    public static string Template => "/services";
     public static string[] Methods => new string[] { HttpMethod.Get.ToString() };
     public static Delegate Handle => Action;
 
