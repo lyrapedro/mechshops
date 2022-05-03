@@ -17,6 +17,7 @@ public class Service : Entity
         Name = name;
         WorkUnits = workUnits;
         ModifiedAt = DateTime.Now;
+        CreatedAt = DateTime.Now;
 
         Validate();
     }

@@ -6,9 +6,9 @@ using System.Security.Claims;
 
 namespace MechShops.Endpoints.Shops;
 
-public class GetWorkLoadByDayOrInterval
+public class GetWorkLoadByInterval
 {
-    public static string Template => "/workload";
+    public static string Template => "/workloads";
     public static string[] Methods => new string[] { HttpMethod.Get.ToString() };
     public static Delegate Handle => Action;
 
