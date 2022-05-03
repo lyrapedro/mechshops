@@ -54,3 +54,16 @@ $ dotnet run
 A collection do Postman com todas as requisições está em um arquivo JSON na pasta raiz da solução.
 
 
+
+### Autor
+---
+
+<a href="#">
+ <img style="border-radius: 50%;" src="https://avatars.githubusercontent.com/u/38837397?v=4" width="100px;" alt=""/>
+ <br />
+ <sub><b>Pedro Lyra</b></sub></a> <a href="#">🚀</a>
+
+
+Feito com ❤️ por Pedro Lyra 👋🏽 Entre em contato!
+
+[![Linkedin Badge](https://img.shields.io/badge/-Pedro-blue?style=flat-square&logo=Linkedin&logoColor=white&link=https://www.linkedin.com/in/pedro-lyra-44867914a/)](https://www.linkedin.com/in/pedro-lyra-44867914a/) 
