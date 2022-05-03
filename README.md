@@ -13,6 +13,8 @@
 <!--te-->
 
 <h2 id="features">Features</h2>
+<p>- ✅ Requisitos obrigatórios</p>
+<p>- ✅ Oficina pode ter serviços personalizados ✨</p>
 
 <h2 id="instalacao">Get started</h2>
 
@@ -33,13 +35,16 @@ $ git clone https://github.com/lyrapedro/mechshops.git
 
 # Acesse a pasta da solução no terminal/cmd
 $ cd mechshops
-$ cd  src
+$ cd src
 
 # Instale as dependências
 $ dotnet restore
 
 # Aplique as migrations ao seu banco de dados
 $ dotnet ef database update
+
+# Rode a aplicação
+$ dotnet run
 
 # O servidor iniciará na porta:7213 - faça as requisições para: <http://localhost:7213>
 ```
