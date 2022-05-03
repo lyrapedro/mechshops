@@ -55,6 +55,8 @@ A collection do Postman com todas as requisições e exemplos está em um arquiv
 
 
 <h2 id="testes">Tests</h2>
+
+### Executando os testes
 ```bash
 # Acesse a pasta da solução no terminal/cmd
 $ cd src
