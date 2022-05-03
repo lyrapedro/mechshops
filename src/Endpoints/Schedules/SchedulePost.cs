@@ -21,10 +21,11 @@ public class SchedulePost
         CultureInfo provider = new CultureInfo("pt-BR");
         DateTime scheduleDate = DateTime.TryParse(scheduleRequest.Date, provider, DateTimeStyles.None, out validDate) ? validDate : DateTime.Now;
 
-        bool increasedWorkLoad = scheduleDate.DayOfWeek == DayOfWeek.Thursday || scheduleDate.DayOfWeek == DayOfWeek.Friday;
+        bool hasIncreasedWorkLoad = scheduleDate.DayOfWeek == DayOfWeek.Thursday || scheduleDate.DayOfWeek == DayOfWeek.Friday;
+        decimal constIncreaseInWorkload = (decimal)0.3;
 
-        if (increasedWorkLoad)
-            shopTotalWorkLoad = shopTotalWorkLoad + (int)(shopTotalWorkLoad * 0.3);
+        if (hasIncreasedWorkLoad)
+            shopTotalWorkLoad = shopTotalWorkLoad + (int)(shopTotalWorkLoad * constIncreaseInWorkload);
 
         var workLoadUsed = context.Demands.Where(d => d.Schedule.ShopId == shopId && d.Schedule.Date.Date == scheduleDate.Date).Sum(s => s.Service.WorkUnits);
 

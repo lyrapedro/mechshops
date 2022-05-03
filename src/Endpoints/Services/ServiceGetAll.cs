@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MechShops.Endpoints.Shops;
-using MechShops.Infra.Data;
-using System.Security.Claims;
+﻿using MechShops.Infra.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MechShops.Endpoints.Services;
 
@@ -11,6 +9,7 @@ public class ServiceGetAll
     public static string[] Methods => new string[] { HttpMethod.Get.ToString() };
     public static Delegate Handle => Action;
 
+    [Authorize(Policy = "ShopPolicy")]
     public static IResult Action(HttpContext http, ApplicationDbContext context)
     {
         var shopId = http.User.Claims.First(c => c.Type == "ShopId").Value;

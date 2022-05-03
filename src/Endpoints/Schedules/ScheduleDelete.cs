@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using MechShops.Infra.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using MechShops.Infra.Data;
-using System.Security.Claims;
 
 namespace MechShops.Endpoints.Schedules;
 

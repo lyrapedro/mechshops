@@ -18,11 +18,13 @@ public class GetWorkLoadByDayOrInterval
         DateTime? validStartDate = ShopHelper.DateParse(startDate);
         DateTime? validEndDate = ShopHelper.DateParse(endDate);
 
+        int numberOfFutureDays = 5;
+
         if (validStartDate == null)
             validStartDate = DateTime.Now;
 
         if (validEndDate == null)
-            validEndDate = DateTime.Now.AddDays(5);
+            validEndDate = DateTime.Now.AddDays(numberOfFutureDays);
 
         var shopId = http.User.Claims.First(c => c.Type == "ShopId").Value;
         var shopTotalWorkLoad = int.Parse(http.User.Claims.First(c => c.Type == "WorkLoad").Value);
@@ -38,14 +40,16 @@ public class GetWorkLoadByDayOrInterval
 
         List<WorkLoadResponse> response = new List<WorkLoadResponse>();
 
+        decimal constIncreaseInWorkload = (decimal)0.3;
+
         foreach (var date in schedulesDates)
         {
             var workLoadUsed = demands.Where(d => d.Schedule.Date.Date == date.Key).Sum(s => s.Service.WorkUnits);
             var workLoadAvailable = (shopTotalWorkLoad - workLoadUsed) >= 0 ? (shopTotalWorkLoad - workLoadUsed) : 0;
-            bool increasedWorkLoad = date.Key.DayOfWeek == DayOfWeek.Thursday || date.Key.DayOfWeek == DayOfWeek.Friday;
+            bool hasIncreasedWorkLoad = date.Key.DayOfWeek == DayOfWeek.Thursday || date.Key.DayOfWeek == DayOfWeek.Friday;
 
-            if (increasedWorkLoad)
-                workLoadAvailable += (int)(shopTotalWorkLoad * 0.3);
+            if (hasIncreasedWorkLoad)
+                workLoadAvailable += (int)(shopTotalWorkLoad * constIncreaseInWorkload);
 
             var obj = new WorkLoadResponse(date.Key.ToString("dd/MM/yy"), workLoadAvailable, workLoadUsed);
             response.Add(obj);

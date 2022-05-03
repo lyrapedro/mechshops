@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using MechShops.Infra.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
-using MechShops.Infra.Data;
-using System.Security.Claims;
 
 namespace MechShops.Endpoints.Schedules;
 
@@ -18,7 +16,8 @@ public class ScheduleGetAll
         var shopId = http.User.Claims.First(c => c.Type == "ShopId").Value;
 
         var currentDate = DateTime.Now;
-        var maxDate = currentDate.AddDays(5);
+        int numberOfFutureDays = 5;
+        var maxDate = currentDate.AddDays(numberOfFutureDays);
 
         var schedules = context.Schedules.Where(s => s.ShopId == shopId).ToList();
         schedules = schedules.Where(s => s.Date.Date >= currentDate.Date && s.Date.Date <= maxDate.Date).ToList();
