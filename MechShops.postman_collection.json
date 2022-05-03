@@ -1,0 +1,443 @@
+{
+	"info": {
+		"_postman_id": "cf14f244-30b6-49fc-a319-199e92baa534",
+		"name": "MechShops",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "TOKEN",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cnpj\": \"03.853.621/0001-06\",\r\n    \"password\": \"123456\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7213/token",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7213",
+					"path": [
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Shop",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjAzODUzNjIxMDAwMTA2IiwiU2hvcElkIjpbIjY3MTNmY2FiLWMxZmItNGFlMC05NDk4LTAxODc5ZGNkNjA3MSIsIjY3MTNmY2FiLWMxZmItNGFlMC05NDk4LTAxODc5ZGNkNjA3MSJdLCJXb3JrTG9hZCI6IjEwIiwibmJmIjoxNjUxNTM2NzI0LCJleHAiOjE2NTE1MzczMjQsImlhdCI6MTY1MTUzNjcyNCwiaXNzIjoib2ZpY2luYTMwMElzc3VlciIsImF1ZCI6IkF1ZGllbmNlIn0.j0f73AF9QfXKPN845f1TKJC23jd18sGbsfDwLwgsKYU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cnpj\": \"03.853.621/0001-06\",\r\n    \"password\": \"123456\",\r\n    \"workLoad\": 10\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7213/shops",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7213",
+					"path": [
+						"shops"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Shop",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjM2NDk2MTY1MDAwMTQzIiwiU2hvcElkIjpbIjRkMDhjNTAyLTFmZDMtNDlkMS1iMTc4LWU3ZTZkN2Y5MDkzNSIsIjRkMDhjNTAyLTFmZDMtNDlkMS1iMTc4LWU3ZTZkN2Y5MDkzNSJdLCJXb3JrTG9hZCI6WyIwIiwiMCIsIjAiXSwibmJmIjoxNjUxNTMwNDg1LCJleHAiOjE2NTE1MzEwODUsImlhdCI6MTY1MTUzMDQ4NSwiaXNzIjoib2ZpY2luYTMwMElzc3VlciIsImF1ZCI6IkF1ZGllbmNlIn0.hlOYGcArUwkqm_yn1mIoaJjM4c7ZVYx4o2kC3oH_0kI",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"workLoad\": 8\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7213/shops",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7213",
+					"path": [
+						"shops"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DEL Shop",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjE5LjM0MC41NjgvMDAwMS04MCIsIlNob3BJZCI6WyI0YTIyOThkNy1lNjE3LTQ2NTQtYTQyMS03NThlZmVlMDFmZDEiLCI0YTIyOThkNy1lNjE3LTQ2NTQtYTQyMS03NThlZmVlMDFmZDEiXSwiV29ya0xvYWQiOiIxMCIsIm5iZiI6MTY1MTQ1Mjk5NywiZXhwIjoxNjUxNDU1Njk2LCJpYXQiOjE2NTE0NTI5OTcsImlzcyI6Im9maWNpbmEzMDBJc3N1ZXIiLCJhdWQiOiJBdWRpZW5jZSJ9.cUkGvO5h2tnHZJPLd0MCeodo_gDzmiGr_sPp8FB2oPo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7213/shops",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7213",
+					"path": [
+						"shops"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Schedule",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjAzODUzNjIxMDAwMTA2IiwiU2hvcElkIjpbIjY3MTNmY2FiLWMxZmItNGFlMC05NDk4LTAxODc5ZGNkNjA3MSIsIjY3MTNmY2FiLWMxZmItNGFlMC05NDk4LTAxODc5ZGNkNjA3MSJdLCJXb3JrTG9hZCI6IjEwIiwibmJmIjoxNjUxNTMzMDYxLCJleHAiOjE2NTE1MzM2NjEsImlhdCI6MTY1MTUzMzA2MSwiaXNzIjoib2ZpY2luYTMwMElzc3VlciIsImF1ZCI6IkF1ZGllbmNlIn0.O6izHNwl2EMOHCrawy5Cwh8Asv50yLZ_25Ki6rFHry0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"date\": \"06/05/2022\",\r\n    \"services\": [\r\n        \"Revisão completa\"\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7213/schedules",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7213",
+					"path": [
+						"schedules"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET WorkLoadByDay",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjAzODUzNjIxMDAwMTA2IiwiU2hvcElkIjpbIjY3MTNmY2FiLWMxZmItNGFlMC05NDk4LTAxODc5ZGNkNjA3MSIsIjY3MTNmY2FiLWMxZmItNGFlMC05NDk4LTAxODc5ZGNkNjA3MSJdLCJXb3JrTG9hZCI6IjEwIiwibmJmIjoxNjUxNTMzMDYxLCJleHAiOjE2NTE1MzM2NjEsImlhdCI6MTY1MTUzMzA2MSwiaXNzIjoib2ZpY2luYTMwMElzc3VlciIsImF1ZCI6IkF1ZGllbmNlIn0.O6izHNwl2EMOHCrawy5Cwh8Asv50yLZ_25Ki6rFHry0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7213/workload",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7213",
+					"path": [
+						"workload"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET WorkLoadByInterval",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjAzODUzNjIxMDAwMTA2IiwiU2hvcElkIjpbIjY3MTNmY2FiLWMxZmItNGFlMC05NDk4LTAxODc5ZGNkNjA3MSIsIjY3MTNmY2FiLWMxZmItNGFlMC05NDk4LTAxODc5ZGNkNjA3MSJdLCJXb3JrTG9hZCI6IjEwIiwibmJmIjoxNjUxNTM2MDE3LCJleHAiOjE2NTE1MzY2MTcsImlhdCI6MTY1MTUzNjAxNywiaXNzIjoib2ZpY2luYTMwMElzc3VlciIsImF1ZCI6IkF1ZGllbmNlIn0.1AimTuobRuJqcwa8dFhnBxBMXm8uas-y2FnOvCIwf8g",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7213/workload?startDate=02/05/2022&endDate=06/05/2022",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7213",
+					"path": [
+						"workload"
+					],
+					"query": [
+						{
+							"key": "startDate",
+							"value": "02/05/2022"
+						},
+						{
+							"key": "endDate",
+							"value": "06/05/2022"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GETALL Schedule",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjAzODUzNjIxMDAwMTA2IiwiU2hvcElkIjpbIjY3MTNmY2FiLWMxZmItNGFlMC05NDk4LTAxODc5ZGNkNjA3MSIsIjY3MTNmY2FiLWMxZmItNGFlMC05NDk4LTAxODc5ZGNkNjA3MSJdLCJXb3JrTG9hZCI6IjEwIiwibmJmIjoxNjUxNTMzMDYxLCJleHAiOjE2NTE1MzM2NjEsImlhdCI6MTY1MTUzMzA2MSwiaXNzIjoib2ZpY2luYTMwMElzc3VlciIsImF1ZCI6IkF1ZGllbmNlIn0.O6izHNwl2EMOHCrawy5Cwh8Asv50yLZ_25Ki6rFHry0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7213/schedules",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7213",
+					"path": [
+						"schedules"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DEL Schedule",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjM2NDk2MTY1MDAwMTQzIiwiU2hvcElkIjpbIjRkMDhjNTAyLTFmZDMtNDlkMS1iMTc4LWU3ZTZkN2Y5MDkzNSIsIjRkMDhjNTAyLTFmZDMtNDlkMS1iMTc4LWU3ZTZkN2Y5MDkzNSJdLCJXb3JrTG9hZCI6IjgiLCJuYmYiOjE2NTE1MzI0MDEsImV4cCI6MTY1MTUzMzAwMSwiaWF0IjoxNjUxNTMyNDAxLCJpc3MiOiJvZmljaW5hMzAwSXNzdWVyIiwiYXVkIjoiQXVkaWVuY2UifQ.T5bZKSzlEUR1eAkWZn1oR4MYHBKohC5gc6A9ohvvEzA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7213/schedules/{id:int}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7213",
+					"path": [
+						"schedules",
+						"{id:int}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Service",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjAzODUzNjIxMDAwMTA2IiwiU2hvcElkIjpbIjY3MTNmY2FiLWMxZmItNGFlMC05NDk4LTAxODc5ZGNkNjA3MSIsIjY3MTNmY2FiLWMxZmItNGFlMC05NDk4LTAxODc5ZGNkNjA3MSJdLCJXb3JrTG9hZCI6IjEwIiwibmJmIjoxNjUxNTM2NzI0LCJleHAiOjE2NTE1MzczMjQsImlhdCI6MTY1MTUzNjcyNCwiaXNzIjoib2ZpY2luYTMwMElzc3VlciIsImF1ZCI6IkF1ZGllbmNlIn0.j0f73AF9QfXKPN845f1TKJC23jd18sGbsfDwLwgsKYU",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Novo serviço\",\r\n    \"workUnits\": 5\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7213/services",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7213",
+					"path": [
+						"services"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET Services",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjAzODUzNjIxMDAwMTA2IiwiU2hvcElkIjpbIjY3MTNmY2FiLWMxZmItNGFlMC05NDk4LTAxODc5ZGNkNjA3MSIsIjY3MTNmY2FiLWMxZmItNGFlMC05NDk4LTAxODc5ZGNkNjA3MSJdLCJXb3JrTG9hZCI6IjEwIiwibmJmIjoxNjUxNTM2MDE3LCJleHAiOjE2NTE1MzY2MTcsImlhdCI6MTY1MTUzNjAxNywiaXNzIjoib2ZpY2luYTMwMElzc3VlciIsImF1ZCI6IkF1ZGllbmNlIn0.1AimTuobRuJqcwa8dFhnBxBMXm8uas-y2FnOvCIwf8g",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7213/services",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7213",
+					"path": [
+						"services"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Service",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjAzODUzNjIxMDAwMTA2IiwiU2hvcElkIjpbIjY3MTNmY2FiLWMxZmItNGFlMC05NDk4LTAxODc5ZGNkNjA3MSIsIjY3MTNmY2FiLWMxZmItNGFlMC05NDk4LTAxODc5ZGNkNjA3MSJdLCJXb3JrTG9hZCI6IjEwIiwibmJmIjoxNjUxNTM3NDc0LCJleHAiOjE2NTE1MzgwNzQsImlhdCI6MTY1MTUzNzQ3NCwiaXNzIjoib2ZpY2luYTMwMElzc3VlciIsImF1ZCI6IkF1ZGllbmNlIn0.jklScIHyrr2F1_0vjRPLJjdMgu8vej7GndLfP3J7l5Q",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Novo nome editado\",\r\n    \"workUnits\": 10\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:7213/services/{id:int}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7213",
+					"path": [
+						"services",
+						"{id:int}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DEL Service",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IjE5LjM0MC41NjgvMDAwMS04MCIsIlNob3BJZCI6WyI0YTIyOThkNy1lNjE3LTQ2NTQtYTQyMS03NThlZmVlMDFmZDEiLCI0YTIyOThkNy1lNjE3LTQ2NTQtYTQyMS03NThlZmVlMDFmZDEiXSwiV29ya0xvYWQiOiIxMCIsIm5iZiI6MTY1MTQ1Mjk5NywiZXhwIjoxNjUxNDU1Njk2LCJpYXQiOjE2NTE0NTI5OTcsImlzcyI6Im9maWNpbmEzMDBJc3N1ZXIiLCJhdWQiOiJBdWRpZW5jZSJ9.cUkGvO5h2tnHZJPLd0MCeodo_gDzmiGr_sPp8FB2oPo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:7213/services/{id:int}",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "7213",
+					"path": [
+						"services",
+						"{id:int}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
