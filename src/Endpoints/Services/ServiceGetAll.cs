@@ -13,7 +13,7 @@ public class ServiceGetAll
 
     public static IResult Action(HttpContext http, ApplicationDbContext context)
     {
-        var shopId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+        var shopId = http.User.Claims.First(c => c.Type == "ShopId").Value;
         var services = context.Services.Where(s => s.ShopId == shopId).ToList();
         var response = services.Select(s => new ServiceResponse(s.Id, s.Name, s.WorkUnits, s.ModifiedAt, s.CreatedAt));
 

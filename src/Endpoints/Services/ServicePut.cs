@@ -14,8 +14,13 @@ public class ServicePut
     [Authorize(Policy = "ShopPolicy")]
     public static async Task<IResult> Action([FromRoute] int id, ServiceRequest serviceRequest, HttpContext http, ApplicationDbContext context)
     {
-        var shopId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;    
+        var shopId = http.User.Claims.First(c => c.Type == "ShopId").Value;    
         var service = context.Services.FirstOrDefault(s => s.Id == id && s.ShopId == shopId);
+
+        var hasRelatedSchedule = context.Demands.Where(s => s.ServiceId == id).Any() && serviceRequest.WorkUnits > 0;
+
+        if (hasRelatedSchedule)
+            return Results.NotFound("You cannot delete this service because there are schedules related to it");
 
         if (service == null)
             return Results.NotFound("Service does not exist");

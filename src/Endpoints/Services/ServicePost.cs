@@ -15,7 +15,7 @@ public class ServicePost
     [Authorize(Policy = "ShopPolicy")]
     public static async Task<IResult> Action(HttpContext http, ServiceRequest serviceRequest, ApplicationDbContext context)
     {
-        var shopId = http.User.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value;
+        var shopId = http.User.Claims.First(c => c.Type == "ShopId").Value;
 
         var service = new Service(serviceRequest.Name, serviceRequest.WorkUnits, shopId);
 

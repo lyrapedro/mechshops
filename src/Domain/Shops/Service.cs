@@ -9,13 +9,10 @@ public class Service : Entity
     public int WorkUnits { get; set; }
 
     public Service()
-    {
-        Validate();
-    }
+    { }
 
     public Service(string name, int workUnits, string shopId)
     {
-        Guid validGuid;
         ShopId = shopId;
         Name = name;
         WorkUnits = workUnits;
