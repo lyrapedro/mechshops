@@ -23,6 +23,9 @@ public class Service : Entity
 
     private void Validate()
     {
+        if(WorkUnits <= 0)
+            AddNotification("WorkUnits", "WorkUnits required");
+
         var contract = new Contract<Service>()
             .IsNotNullOrEmpty(Name, "Name");
         AddNotifications(contract);
