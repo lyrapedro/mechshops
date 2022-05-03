@@ -15,6 +15,7 @@
 <h2 id="features">Features</h2>
 <p>- ✅ Requisitos obrigatórios</p>
 <p>- ✅ Oficina pode ter serviços personalizados ✨</p>
+<p>- ✅ Sem Exceptions! Apenas notifications. ✨</p>
 
 <h2 id="instalacao">Get started</h2>
 
@@ -34,7 +35,6 @@ $ Configure sua connection string no arquivo appsettingsDevelopment.json
 $ git clone https://github.com/lyrapedro/mechshops.git
 
 # Acesse a pasta da solução no terminal/cmd
-$ cd mechshops
 $ cd src
 
 # Instale as dependências
@@ -51,8 +51,17 @@ $ dotnet run
 
 <h2 id="orientaçoes">Orientações</h2>
 
-A collection do Postman com todas as requisições está em um arquivo JSON na pasta raiz da solução.
+A collection do Postman com todas as requisições e exemplos está em um arquivo JSON na pasta raiz da solução.
 
+
+<h2 id="testes">Tests</h2>
+```bash
+# Acesse a pasta da solução no terminal/cmd
+$ cd src
+
+# Execute os testes
+$ dotnet test
+```
 
 
 ### Autor
