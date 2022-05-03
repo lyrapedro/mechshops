@@ -16,6 +16,7 @@
 <p>- ✅ Requisitos obrigatórios</p>
 <p>- ✅ Oficina pode ter serviços personalizados ✨</p>
 <p>- ✅ Sem Exceptions! Apenas notifications. ✨</p>
+<p>- ✅ Tabela no banco de dados com TODOS os Logs do sistema! ✨</p>
 
 <h2 id="instalacao">Get started</h2>
 
