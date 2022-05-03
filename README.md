@@ -52,7 +52,9 @@ $ dotnet run
 
 <h2 id="orientaçoes">Orientações</h2>
 
-A collection do Postman com todas as requisições e exemplos está em um arquivo JSON na pasta raiz da solução.
+- A collection do Postman com todas as requisições e exemplos está em um arquivo JSON na pasta raiz da solução.
+- Antes de qualquer requisição, crie uma oficina utilizando a request "POST Shop" da collection, após isso, use a request "TOKEN" para se autenticar com os dados cadastrados e pegar o token.
+- Lembre-se de atualizar o "Bearer Token" para um token válido na aba "Authorization" da requisição no Postman. O token expira a cada 10 minutos.
 
 
 <h2 id="testes">Tests</h2>
